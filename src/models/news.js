@@ -27,6 +27,14 @@ const getAllNewsByMatch = async (params) => {
     return await mysql.query(statement, parameters);
 }
 
+const purgeAllNews = async () => {
+    const statement = 'truncate news';
+    const parameters = [];
+    return mysql.query(statement, parameters)
+    .then(res => { return { status: "purged all news" } })
+    .catch(err => { return { status: err } });
+}
+
 
 const createNews = async params => {
     const { title, description, tourId, matchId } = params;
@@ -95,5 +103,6 @@ module.exports = {
     createNews: createNews,
     getAllNewsBySport: getAllNewsBySport,
     getAllNewsByTour: getAllNewsByTour,
-    getAllNewsByMatch: getAllNewsByMatch
+    getAllNewsByMatch: getAllNewsByMatch,
+    purgeAllNews: purgeAllNews
 }

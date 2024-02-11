@@ -50,11 +50,15 @@ const getAllNewsBySport = async params => {
     return await News.getAllNewsBySport(params);
 }
 
+const purgeAllNews = async params => {
+    return await News.purgeAllNews();
+}
 
 module.exports = {
     getAllNews: getAllNews,
     createNews: createNews,
     getAllNewsByMatch: getAllNewsByMatch,
     getAllNewsBySport: getAllNewsBySport,
-    getAllNewsByTour: getAllNewsByTour
+    getAllNewsByTour: getAllNewsByTour,
+    purgeAllNews: purgeAllNews
 }

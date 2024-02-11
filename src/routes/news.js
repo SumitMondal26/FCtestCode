@@ -6,7 +6,7 @@ module.exports = function (app) {
         try {
             return res.json(await News.getAllNews());
         } catch (err) {
-            return next(err)
+            return res.status(500).json({ status: err.message });
         }
     })
 
@@ -16,7 +16,7 @@ module.exports = function (app) {
         try {
             return res.json(await News.getAllNewsByMatch(params));
         } catch (err) {
-            return next(err)
+            return res.status(500).json({ status: err.message });
         }
     })
     app.get("/news/sport", async (req, res, next) => {
@@ -25,7 +25,7 @@ module.exports = function (app) {
         try {
             return res.json(await News.getAllNewsBySport(params));
         } catch (err) {
-            return next(err)
+            return res.status(500).json({ status: err.message });
         }
     })
     app.get("/news/tour", async (req, res, next) => {
@@ -34,21 +34,25 @@ module.exports = function (app) {
         try {
             return res.json(await News.getAllNewsByTour(params));
         } catch (err) {
-            return next(err)
+            return res.status(500).json({ status: err.message });
         }
     })
 
     app.post("/news/create", async (req, res, next) => {
 
         try {
-            res.setHeader('Content-Type', 'application/json');
-
             return res.json(await News.createNews(req.body));
-
-
         } catch (err) {
-            return next(err)
+            return res.status(500).json({ status: err.message });
+        }
+    })
 
+    app.post("/news/purge", async (req, res, next) => {
+
+        try {
+            return res.json(await News.purgeAllNews());
+        } catch (err) {
+            return res.status(500).json({ status: err.message });
         }
     })
 }

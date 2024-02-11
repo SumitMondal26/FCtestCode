@@ -7,7 +7,7 @@ const getAllTours = async () => {
 }
 
 const getTourDetails = async params => {
-    console.log("1111");
+    
     const statement = 'select * from tours where tours.name = ?';
     const parameters = [params.name];
     return await mysql.query(statement, parameters);
