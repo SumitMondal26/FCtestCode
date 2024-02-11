@@ -40,16 +40,23 @@ create table
 create table
     if not exists mydb.news (
         id int auto_increment not null primary key,
-        news varchar(200) not null,
+        title varchar(200) not null,
+        description varchar(200) not null,
         sportId int not null,
         tourId int not null,
-        matchId int not null,
+        matchId int,
         recUpdatedAt timestamp not null default current_timestamp on update current_timestamp,
         createdAt timestamp not null default current_timestamp,
         foreign key (sportId) references sports (id),
         foreign key (tourId) references tours (id),
         foreign key (matchId) references matches (id)
     );
+
+create index news_sportID_index ON mydb.news (sportId);
+
+create index news_tourID_index ON mydb.news (tourId);
+
+create index news_matchID_index ON mydb.news (matchId);
 
 -- seed data
 insert ignore into mydb.sports (id, name)

@@ -29,31 +29,65 @@ const getAllNewsByMatch = async (params) => {
 
 
 const createNews = async params => {
-    const { news, sportId, tourId, matchId } = params;
-    
-    [res] = await mysql.query("select id , tourId from matches where id = ?", [matchId])
+    const { title, description, tourId, matchId } = params;
 
-    if (!res) {
-        return { status: "invalid id given for match" }
+    if (tourId != undefined && matchId != undefined) {
+
+
+        const [res] = await mysql.query("select id , tourId from matches where id = ?", [matchId])
+        if (!res) {
+            return { status: "invalid id given for match" }
+        }
+
+        if (res.tourId != tourId) {
+            return { status: "invalid tour id given for match" }
+        }
+
+        const [res2] = await mysql.query("select sportId from tours where id = ?", [tourId])
+
+        const statement = 'INSERT INTO news (title, description, sportId, tourId, matchId) VALUES (?,?,?,?,?);';
+        const parameters = [title, description, res2.sportId, tourId, matchId];
+
+        return mysql.query(statement, parameters)
+            .then(res => { return { status: "successfull" } })
+            .catch(err => { return { status: err } });
     }
 
-    if (res.tourId != tourId) {
-        return { status: "invalid tour id given for match" }
+
+    if (matchId) {
+
+        const [res] = await mysql.query("select id , tourId from matches where id = ?", [matchId])
+
+        if (!res) {
+            return { status: "invalid id given for match" }
+        }
+
+        const [res2] = await mysql.query("select sportId from tours where id = ?", [res.tourId])
+
+        const statement = 'INSERT INTO news (title, description, sportId, tourId, matchId) VALUES (?,?,?,?,?);';
+        const parameters = [title, description, res2.sportId, res.tourId, matchId];
+        return mysql.query(statement, parameters)
+            .then(res => { return { status: "successfull" } })
+            .catch(err => { return { status: err } });
+
     }
 
-    [res] = await mysql.query("select sportId from tours where id = ?", [tourId])
 
-    if (res.sportId != sportId) {
-        return { status: "invalid sport id given for tour" }
+    if (tourId) {
+
+        const [res] = await mysql.query("select id , sportId from tours where id = ?", [tourId])
+
+        if (!res) {
+            return { status: "invalid id given for tour" }
+        }
+
+        const statement = 'INSERT INTO news (title, description, sportId, tourId) VALUES (?,?,?,?);';
+        const parameters = [title, description, res.sportId, tourId];
+        return mysql.query(statement, parameters)
+            .then(res => { return { status: "successfull" } })
+            .catch(err => { return { status: err } });
+
     }
-
-    const statement = 'INSERT INTO news (news, sportId, tourId, matchId) VALUES (?,?,?,?);';
-    const parameters = [news, sportId, tourId, matchId];
-
-    return mysql.query(statement, parameters)
-        .then(res => { return { status: "successfull" } })
-        .catch(err => { return { status: err } });
-
 }
 
 module.exports = {

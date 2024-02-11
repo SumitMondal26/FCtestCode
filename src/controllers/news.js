@@ -7,21 +7,18 @@ const getAllNews = async () => {
 
 const createNews = async params => {
 
-    const { news, sportId, tourId, matchId } = params;
+    const { title, description, tourId, matchId } = params;
 
-    if (!news) {
-        throw new Error('Missing required parameter: news');
+    if (!title) {
+        throw new Error('Missing required parameter: title');
     }
-    if (!sportId) {
-        throw new Error('Missing required parameter: sportId');
-    }
-    if (!tourId) {
-        throw new Error('Missing required parameter: tourId');
-    }
-    if (!matchId) {
-        throw new Error('Missing required parameter: matchId');
+    if (!description) {
+        throw new Error('Missing required parameter: description');
     }
 
+    if (!tourId && !matchId) {
+        throw new Error('Missing required parameter: tourId / matchId');
+    }
     return await News.createNews(params);
 }
 
