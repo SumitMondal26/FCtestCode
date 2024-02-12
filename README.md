@@ -18,8 +18,9 @@ The endpoint latency increases linearly with the number of tours. Modify the end
     1. noticed endpoint returning wrong output (returned tours instead of matches of asked tours )
     2. increasing performance depends on multiple scopes and levels.
         1. tables can be indexed on most frequent queried column
-        2. data can be cached and cache-fetched to prevent redundant read opertions for table with less writes.
-        3. scaling probelem can be fixed with choice of better performing db solution.
+        2. data can be cached and cache-fetched to prevent redundant read opertions for table with less writes operations.
+        3. master-slave db architecture with sharded clusters.
+        4. scaling probelem can be fixed with choice of better performing db solution.
 
 # Problem 2
 
